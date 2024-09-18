@@ -21,6 +21,7 @@ Route::middleware('auth')->group(function() {
             Route::post('/', [SellerController::class, 'store'])->name('store');
             Route::get('/{seller}/edit', [SellerController::class, 'edit'])->name('edit');
             Route::put('/{seller}', [SellerController::class, 'update'])->name('update');
+            Route::delete('/{seller}', [SellerController::class, 'destroy'])->name('destroy');
         });
 });
 

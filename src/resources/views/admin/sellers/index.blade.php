@@ -27,19 +27,16 @@
                     <tbody>
                     @foreach($sellers as $seller)
                         <tr>
-                            <td>{{ $seller['id']}}</td>
+                            <td>{{ $seller['id'] }}</td>
                             <td>{{ $seller['name'] }}</td>
                             <td>{{ $seller['bin'] }}</td>
-                            <td>{{ $seller['reg_number']}}</td>
+                            <td>{{ $seller['reg_number'] }}</td>
                             <td>{{ $seller['email'] }}</td>
                             <td>{{ $seller['temporary_password'] ?? '-' }}</td>
                             <td>
-                                <a href="{{ route('admin.sellers.edit', ['seller' => $seller['id']] ) }}" class="btn btn-link custom-action-btn">{{ __('Edit') }}</a>
-                                <form action="#" method="POST" style="display:inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-link text-danger custom-action-btn">{{ __('Delete') }}</button>
-                                </form>
+                                <a href="{{ route('admin.sellers.edit', ['seller' => $seller['id']]) }}" class="btn btn-link custom-action-btn">{{ __('Edit') }}</a>
+                                <button class="btn btn-link text-danger custom-action-btn" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $seller['id'] }}">{{ __('Delete') }}</button>
+                                @include('admin.sellers.components._confirm')
                             </td>
                         </tr>
                     @endforeach
@@ -52,4 +49,17 @@
     <div class="mt-3 custom-new-item-btn">
         <a href="{{ route('admin.sellers.create') }}" class="btn btn-success">{{ __('New seller') }}</a>
     </div>
+
+    @push('script')
+        <script>
+            document.querySelectorAll('.btn-link.text-danger').forEach(button => {
+                button.addEventListener('click', function() {
+                    const modalId = this.getAttribute('data-bs-target');
+                    const deleteModal = new bootstrap.Modal(document.querySelector(modalId));
+                    deleteModal.show();
+                });
+            });
+        </script>
+    @endpush
+
 @endsection

@@ -16,7 +16,7 @@ class SellerController extends Controller
 {
     public function index(): View
     {
-        $sellers = SellerModel::query()->with('user')->get();
+        $sellers = SellerModel::whereIsBanned(false)->with('user')->get();
         $sellers = MinifiedSellerResource::collection($sellers)->toArray(\request());
 
         return view('admin.sellers.index', compact('sellers'));
@@ -46,8 +46,10 @@ class SellerController extends Controller
         return redirect()->route('admin.sellers.index');
     }
 
-    public function destroy()
+    public function destroy(SellerModel $seller): RedirectResponse
     {
-
+        $seller->is_banned = true;
+        $seller->save();
+        return back();
     }
 }
