@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 
+
 /**
  * 
  *
@@ -20,6 +21,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property int|null $user_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Category> $categories
+ * @property-read int|null $categories_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Restaurant> $restaurants
  * @property-read int|null $restaurants_count
  * @property-read \App\Models\User|null $user
@@ -47,6 +50,10 @@ class Seller extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function categories(): HasMany {
+        return $this->hasMany(Category::class);
     }
 
     public function restaurants(): HasMany

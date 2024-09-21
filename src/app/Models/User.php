@@ -10,12 +10,13 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 
+
 /**
- *
+ * 
  *
  * @property int $id
- * @property string $first_name
- * @property string $last_name
+ * @property string|null $first_name
+ * @property string|null $last_name
  * @property string $email
  * @property int $is_admin
  * @property \Illuminate\Support\Carbon|null $email_verified_at

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+
 /**
  * 
  *
@@ -17,8 +18,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property int $seller_id
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Category> $categories
- * @property-read int|null $categories_count
  * @property-read \App\Models\Seller $seller
  * @method static \Illuminate\Database\Eloquent\Builder|Restaurant newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Restaurant newQuery()
@@ -41,10 +40,6 @@ class Restaurant extends Model
         'name',
         'description',
     ];
-
-    public function categories(): HasMany {
-        return $this->hasMany(Category::class);
-    }
 
     public function seller(): BelongsTo {
         return $this->belongsTo(Seller::class);

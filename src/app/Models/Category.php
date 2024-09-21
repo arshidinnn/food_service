@@ -13,12 +13,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  *
  * @property int $id
  * @property string $name
- * @property int $restaurant_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int $restaurant_id
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Food> $foods
  * @property-read int|null $foods_count
- * @property-read \App\Models\Restaurant $restaurant
+ * @property-read \App\Models\Seller|null $seller
  * @method static \Illuminate\Database\Eloquent\Builder|Category newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Category newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Category query()
@@ -37,8 +37,8 @@ class Category extends Model
       'name'
     ];
 
-    public function restaurant(): BelongsTo {
-        return $this->belongsTo(Restaurant::class);
+    public function seller(): BelongsTo {
+        return $this->belongsTo(Seller::class);
     }
 
     public function foods(): HasMany
