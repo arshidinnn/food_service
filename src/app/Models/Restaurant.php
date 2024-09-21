@@ -7,14 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-
-
 /**
  * 
  *
  * @property int $id
- * @property string $image
+ * @property string|null $image
  * @property string $name
+ * @property string|null $description
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property int $seller_id
@@ -25,6 +24,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Restaurant newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Restaurant query()
  * @method static \Illuminate\Database\Eloquent\Builder|Restaurant whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Restaurant whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Restaurant whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Restaurant whereImage($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Restaurant whereName($value)
@@ -39,7 +39,7 @@ class Restaurant extends Model
     protected $fillable = [
         'image',
         'name',
-        'seller_id'
+        'description',
     ];
 
     public function categories(): HasMany {

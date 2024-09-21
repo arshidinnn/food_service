@@ -23,6 +23,17 @@ Route::middleware('auth')->group(function() {
             Route::put('/{seller}', [SellerController::class, 'update'])->name('update');
             Route::delete('/{seller}', [SellerController::class, 'destroy'])->name('destroy');
         });
+
+    Route::prefix('/restaurants')
+        ->name('restaurants.')
+        ->group(function() {
+            Route::get('/', [RestaurantController::class, 'index'])->name('index');
+            Route::get('/create', [RestaurantController::class, 'create'])->name('create');
+            Route::post('/', [RestaurantController::class, 'store'])->name('store');
+            Route::get('/{restaurant}/edit', [RestaurantController::class, 'edit'])->name('edit');
+            Route::put('/{restaurant}', [RestaurantController::class, 'update'])->name('update');
+            Route::delete('/{restaurant}', [RestaurantController::class, 'destroy'])->name('destroy');
+        });
 });
 
 

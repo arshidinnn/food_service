@@ -3,6 +3,18 @@
     <div class="position-sticky sticky-top">
         <ul class="nav nav-list flex-column text-white">
             <li class="nav-item">
+                <a class="nav-link link-item text-white active" href="{{ route('admin.sellers.index') }}">
+                    {{ __('Sellers') }}
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link link-item text-white active" href="{{ route('admin.restaurants.index') }}">
+                    {{ __('Restaurants') }}
+                </a>
+            </li>
+
+            <li class="nav-item">
                 <a class="nav-link link-item text-white active" href="#">
                     Товары
                 </a>
