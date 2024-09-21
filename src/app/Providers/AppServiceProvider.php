@@ -15,6 +15,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(SellerService::class, SellerService::class);
         $this->app->bind(RestaurantService::class, RestaurantService::class);
+        $this->app->bind(SellerService::class, SellerService::class);
     }
 
     /**

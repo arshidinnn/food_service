@@ -57,16 +57,4 @@
         <a href="{{ route('admin.restaurants.create') }}" class="btn btn-success">{{ __('New restaurant') }}</a>
     </div>
 
-    @push('script')
-        <script>
-            document.querySelectorAll('.btn-link.text-danger').forEach(button => {
-                button.addEventListener('click', function() {
-                    const modalId = this.getAttribute('data-bs-target');
-                    const deleteModal = new bootstrap.Modal(document.querySelector(modalId));
-                    deleteModal.show();
-                });
-            });
-        </script>
-    @endpush
-
 @endsection
