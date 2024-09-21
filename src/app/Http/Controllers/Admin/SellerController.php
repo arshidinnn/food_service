@@ -10,7 +10,6 @@ use App\Http\Resources\Admin\Seller\MinifiedSellerResource;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use App\Models\Seller as SellerModel;
-use Illuminate\Http\Request;
 
 class SellerController extends Controller
 {
@@ -37,19 +36,24 @@ class SellerController extends Controller
     public function store(StoreSellerRequest $request): RedirectResponse
     {
         Seller::store($request);
-        return redirect()->route('admin.sellers.index');
+        return redirect()
+            ->route('admin.sellers.index')
+            ->with('success', __('Seller created successfully'));
     }
 
     public function update(UpdateSellerRequest $request, string $id): RedirectResponse
     {
         Seller::update($request, $id);
-        return redirect()->route('admin.sellers.index');
+        return redirect()
+            ->route('admin.sellers.index')
+            ->with('success', __('Seller updated successfully'));
     }
 
     public function destroy(SellerModel $seller): RedirectResponse
     {
         $seller->is_banned = true;
         $seller->save();
-        return back();
+        return back()
+            ->with('success', __('Seller removed successfully'));
     }
 }

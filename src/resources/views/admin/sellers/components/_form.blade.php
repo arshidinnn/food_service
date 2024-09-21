@@ -6,6 +6,9 @@
         <label for="name" class="form-label">{{ __('Name') }} <span class="text-danger">*</span></label>
         <input type="text" class="form-control form-input" value="{{ $seller['name'] ?? old('name') }}"
                id="name" name="name" placeholder="{{ __('Enter name') }}">
+        @error('name')
+            <div class="form-warning">{{ $message }}</div>
+        @enderror
     </div>
 
     <div class="mb-3 row form-row">
@@ -13,11 +16,17 @@
             <label for="bin" class="form-label">{{ __('BIN') }} <span class="text-danger">*</span></label>
             <input type="text" class="form-control form-input" value="{{ $seller['bin'] ?? old('bin') }}"
                    id="bin" name="bin" placeholder="{{ __('Enter BIN') }}">
+            @error('bin')
+                <div class="form-warning">{{ $message }}</div>
+            @enderror
         </div>
         <div class="col-md-6 form-col">
             <label for="reg_number" class="form-label">{{ __('Registration Number') }} <span class="text-danger">*</span></label>
             <input type="text" class="form-control form-input" value="{{ $seller['reg_number'] ?? old('reg_number') }}"
                    id="reg_number" name="reg_number" placeholder="{{ __('Enter registration number') }}">
+            @error('reg_number')
+                <div class="form-warning">{{ $message }}</div>
+            @enderror
         </div>
     </div>
 
@@ -26,6 +35,9 @@
         <input type="email" class="form-control form-input" value="{{ $seller['email'] ?? old('email') }}"
                id="email" name="email" placeholder="{{ __('Enter email') }}"
                @if($method == 'PUT') readonly @endif>
+        @error('email')
+            <div class="form-warning">{{ $message }}</div>
+        @enderror
     </div>
 
     <div class="d-flex justify-content-between custom-buttons">
