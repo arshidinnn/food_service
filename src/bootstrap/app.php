@@ -19,6 +19,10 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->redirectGuestsTo(fn () => route('admin.loginForm'));
+        $middleware->alias([
+                'profile.complete' => \App\Http\Middleware\CheckProfileCompletion::class,
+                'profile.incomplete' => \App\Http\Middleware\RedirectIfProfileComplete::class,
+            ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

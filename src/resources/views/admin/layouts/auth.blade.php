@@ -10,7 +10,15 @@
 </head>
 
 <body class="d-flex align-items-center justify-content-center vh-100">
-@yield('content')
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow-sm p-4 form-container">
+                @yield('content')
+            </div>
+        </div>
+    </div>
+</div>
 <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
 </body>
 
