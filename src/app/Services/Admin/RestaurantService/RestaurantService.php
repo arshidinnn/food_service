@@ -2,16 +2,17 @@
 
 namespace App\Services\Admin\RestaurantService;
 
+use App\Facades\StorageFacade;
 use App\Http\Requests\Admin\Restaurant\StoreRestaurantRequest;
 use App\Http\Requests\Admin\Restaurant\UpdateRestaurantRequest;
 use App\Models\Restaurant;
 use App\Models\Seller;
 use Exception;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 
 class RestaurantService
 {
+    public function __construct() {}
     /**
      * @throws Exception
      */
@@ -26,9 +27,9 @@ class RestaurantService
 
         DB::beginTransaction();
         try {
-            $imageUrl = $this->handleImageUpload($request);
+            $imageUrl = StorageFacade::handleImageUpload($request->file('image'), 'restaurants');
 
-            $seller->restaurants()->create([
+            $seller->restaurant()->create([
                 'name' => $request->string('name'),
                 'description' => $request->string('description') ?? null,
                 'image' => $imageUrl,
@@ -53,7 +54,7 @@ class RestaurantService
             $restaurant->description = $request->string('description') ?? null;
 
             if ($request->hasFile('image')) {
-                $this->updateImage($request, $restaurant);
+                StorageFacade::updateImage($request->file('image'), $restaurant, 'restaurants');
             }
 
             $restaurant->save();
@@ -65,31 +66,5 @@ class RestaurantService
         }
     }
 
-    /**
-     * @throws Exception
-     */
-    protected function handleImageUpload(StoreRestaurantRequest $request): string
-    {
-        if (!$request->hasFile('image')) {
-            throw new Exception('No image file provided.');
-        }
 
-        $imagePath = $request->file('image')->store('restaurants', 'public');
-        return asset('storage/' . $imagePath);
-    }
-
-    protected function updateImage(UpdateRestaurantRequest $request, Restaurant $restaurant): void
-    {
-        if ($restaurant->image && Storage::disk('public')->exists($this->getImagePath($restaurant->image))) {
-            Storage::disk('public')->delete($this->getImagePath($restaurant->image));
-        }
-
-        $imagePath = $request->file('image')->store('restaurants', 'public');
-        $restaurant->image = asset('storage/' . $imagePath);
-    }
-
-    protected function getImagePath(string $imageUrl): string
-    {
-        return str_replace(asset('storage/'), '', $imageUrl);
-    }
 }

@@ -21,6 +21,12 @@
             </li>
 
             <li class="nav-item">
+                <a class="nav-link link-item text-white active" href="{{ route('admin.foods.index') }}">
+                    {{ __('Foods') }}
+                </a>
+            </li>
+
+            <li class="nav-item">
                 <a class="nav-link link-item text-white active" href="#">
                     Товары
                 </a>

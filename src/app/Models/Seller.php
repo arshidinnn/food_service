@@ -10,8 +10,9 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 
 
+
 /**
- * 
+ *
  *
  * @property int $id
  * @property string $name
@@ -23,8 +24,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Category> $categories
  * @property-read int|null $categories_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Restaurant> $restaurants
- * @property-read int|null $restaurants_count
+ * @property-read \App\Models\Restaurant|null $restaurant
  * @property-read \App\Models\User|null $user
  * @method static \Illuminate\Database\Eloquent\Builder|Seller newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Seller newQuery()
@@ -52,12 +52,19 @@ class Seller extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function categories(): HasMany {
+    public function categories(): HasMany
+    {
         return $this->hasMany(Category::class);
     }
 
-    public function restaurants(): HasMany
+    public function restaurant(): HasOne
     {
-        return $this->hasMany(Restaurant::class);
+        return $this->hasOne(Restaurant::class);
     }
+
+    public function foods(): HasMany
+    {
+        return $this->hasMany(Food::class);
+    }
+
 }

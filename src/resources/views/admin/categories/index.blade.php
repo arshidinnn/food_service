@@ -4,6 +4,10 @@
     {{ __('Categories') }}
 @endsection
 
+@push('meta')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+@endpush
+
 @section('content')
     @if(session('success'))
         <div class="alert alert-success">
@@ -53,3 +57,45 @@
     @endif
     @include('admin.categories.components._form')
 @endsection
+
+@push('scripts')
+    <script src="{{ asset('assets/js/jquery-3.7.1.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $('#category-form').on('submit', function(e) {
+                e.preventDefault();
+
+                $('#error-message').hide();
+
+                let formData = new FormData();
+                formData.append('name', $('#name').val());
+
+                $.ajax({
+                    url: '{{ route('admin.categories.store') }}',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        $('#category-form')[0].reset();
+                        location.reload();
+                    },
+                    error: function(xhr) {
+                        if (xhr.status === 422) {
+                            let errors = xhr.responseJSON.errors;
+                            if (errors.name) {
+                                $('#error-message').text(errors.name[0]).show();
+                            }
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+@endpush

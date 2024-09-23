@@ -5,21 +5,28 @@ namespace App\Services\Admin\CategoryService;
 use App\Http\Requests\Admin\Category\CategoryRequest;
 use App\Models\Category;
 use App\Models\Seller;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class CategoryService
 {
     public function get(): array
     {
-        /** @var Seller $seller */
-        $seller = Seller::query()->first();
+        /** @var User $user */
+        $user = Auth::user();
+
+        $seller = $user->seller()->first();
 
         return $seller->categories()->get()->toArray();
     }
 
     public function store(CategoryRequest $request): void
     {
-        /** @var Seller $seller */
-        $seller = Seller::query()->first();
+        /** @var User $user */
+        $user = Auth::user();
+
+        /** @var Seller $seller*/
+        $seller = $user->seller()->first();
 
         $seller->categories()->create([
             'name' => $request->str('name')

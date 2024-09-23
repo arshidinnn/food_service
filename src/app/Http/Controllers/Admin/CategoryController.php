@@ -6,6 +6,7 @@ use App\Facades\CategoryFacade as Category;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Category\CategoryRequest;
 use App\Models\Category as CategoryModel;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
@@ -17,11 +18,13 @@ class CategoryController extends Controller
         return view('admin.categories.index', compact('categories'));
     }
 
-    public function store(CategoryRequest $request): RedirectResponse
+    public function store(CategoryRequest $request): JsonResponse
     {
         Category::store($request);
-        return back()
-            ->with('success', __('Category added successfully'));
+
+        return response()->json([
+            'success' => 'Category created successfully'
+        ]);
     }
 
     public function update(CategoryRequest $request, CategoryModel $category): RedirectResponse

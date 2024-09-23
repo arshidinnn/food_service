@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Auth;
 
 
 /**
@@ -27,6 +28,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Category whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Category whereRestaurantId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Category whereUpdatedAt($value)
+ * @property int $seller_id
+ * @method static \Illuminate\Database\Eloquent\Builder|Category whereSellerId($value)
  * @mixin \Eloquent
  */
 class Category extends Model
@@ -44,5 +47,19 @@ class Category extends Model
     public function foods(): HasMany
     {
         return $this->hasMany(Food::class);
+    }
+
+    public static function getCategoriesBySeller(): array
+    {
+        /** @var User $user */
+        $user = Auth::user();
+
+        $seller = $user->seller()->first();
+
+        return $seller
+            ->categories()
+            ->select(['id', 'name'])
+            ->get()
+            ->toArray();
     }
 }
