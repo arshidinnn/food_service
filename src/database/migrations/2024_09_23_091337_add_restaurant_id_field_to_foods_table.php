@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('restaurants', function (Blueprint $table) {
-            $table->mediumText('description')->nullable()->after('name');
+        Schema::table('foods', function (Blueprint $table) {
+            $table->foreignId('restaurant_id')->constrained()->cascadeOnDelete();
         });
     }
 
@@ -21,8 +21,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('restaurants', function (Blueprint $table) {
-            $table->dropColumn('description');
+        Schema::table('foods', function (Blueprint $table) {
+            $table->dropForeign(['restaurant_id']);
+            $table->dropColumn('restaurant_id');
         });
     }
 };

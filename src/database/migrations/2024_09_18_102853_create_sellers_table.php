@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('bin');
             $table->string('reg_number');
             $table->boolean('is_banned')->default(false);
-            $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
 
             $table->timestamps();
         });

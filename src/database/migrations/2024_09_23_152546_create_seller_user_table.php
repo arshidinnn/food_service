@@ -11,8 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('foods', function (Blueprint $table) {
+        Schema::create('seller_user', function (Blueprint $table) {
             $table->foreignId('seller_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
         });
     }
 
@@ -21,9 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('foods', function (Blueprint $table) {
-            $table->dropForeign(['seller_id']);
-            $table->dropColumn('seller_id');
-        });
+        Schema::dropIfExists('seller_user');
     }
 };
