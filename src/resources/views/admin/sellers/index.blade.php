@@ -11,7 +11,7 @@
         </div>
     @endif
 
-    @if(empty($sellers))
+    @if($sellers->isEmpty())
         <div class="alert alert-warning">
             {{ __('No sellers found.') }}
         </div>
@@ -19,7 +19,7 @@
         <div class="card shadow-sm custom-product-card">
             <div class="card-body">
                 <div class="d-flex justify-content-between custom-table-header">
-                    <h6>{{ __('All Sellers') }} ({{ count($sellers) }})</h6>
+                    <h6>{{ __('All Sellers') }} ({{ $sellers->total() }})</h6>
                 </div>
                 <div class="table-responsive custom-table-responsive">
                     <table class="table table-hover align-middle text-center custom-dimensions-table">
@@ -35,14 +35,14 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($sellers as $seller)
+                        @foreach($sellers as $index => $seller)
                             <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $seller['name'] }}</td>
-                                <td>{{ $seller['bin'] }}</td>
-                                <td>{{ $seller['reg_number'] }}</td>
-                                <td>{{ $seller['email'] }}</td>
-                                <td>{{ $seller['temporary_password'] ?? '-' }}</td>
+                                <td>{{ ($sellers->currentPage() - 1) * $sellers->perPage() + $index + 1 }}</td>
+                                <td>{{ $seller->name }}</td>
+                                <td>{{ $seller->bin }}</td>
+                                <td>{{ $seller->reg_number }}</td>
+                                <td>{{ $seller->email }}</td>
+                                <td>{{ $seller->temporary_password ?? '-' }}</td>
                                 <td>
                                     <a href="{{ route('admin.sellers.edit', ['seller' => $seller['id']]) }}" class="btn btn-link custom-action-btn">{{ __('Edit') }}</a>
                                     <button class="btn btn-link text-danger custom-action-btn" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $seller['id'] }}">{{ __('Delete') }}</button>
@@ -54,10 +54,15 @@
                         </tbody>
                     </table>
                 </div>
+                <div class="pagination-wrapper">
+                    {{$sellers->appends(request()->query())->links()}}
+                </div>
             </div>
-        </div>
-    @endif
 
+        </div>
+
+
+    @endif
     <div class="mt-3 custom-new-item-btn">
         <a href="{{ route('admin.sellers.create') }}" class="btn btn-success">{{ __('New seller') }}</a>
     </div>

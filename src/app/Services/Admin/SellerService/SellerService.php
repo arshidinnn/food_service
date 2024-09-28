@@ -2,89 +2,57 @@
 
 namespace App\Services\Admin\SellerService;
 
+use App\Actions\Admin\Seller\CreateSellerAction;
+use App\Actions\Admin\Seller\UpdateSellerAction;
+use App\Actions\Admin\User\FindOrCreateUserAction;
+use App\Data\Admin\Seller\CreateSellerData;
+use App\Data\Admin\User\CreateUserData;
+use App\Facades\NotificationFacade as Notification;
 use App\Http\Requests\Admin\Seller\StoreSellerRequest;
 use App\Http\Requests\Admin\Seller\UpdateSellerRequest;
 use App\Models\Seller;
-use App\Models\User;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Str;
 
 class SellerService
 {
-    /**
-     * @throws \Exception
-     */
-    public function store(StoreSellerRequest $request): void
+    public function get(): LengthAwarePaginator
+    {
+        return Seller::whereIsBanned(false)
+            ->with('users')
+            ->paginate(7);
+    }
+
+    public function store(StoreSellerRequest $request): RedirectResponse
     {
         DB::beginTransaction();
-        try {
-            $email = $request->string('email');
-            $user = $this->getUser($email);
-            $user->seller()->create([
-                'name' => $request->string('name'),
-                'reg_number' => $request->string('reg_number'),
-                'bin' => $request->string('bin')
-            ]);
 
-            $this->notifyUser($user, isset($user->temporary_password));
+        $data = CreateUserData::from([
+            'email' => $request->string('email'),
+            'role' => 'owner',
+        ]);
 
-            DB::commit();
-        } catch (\Exception $e) {
-            DB::rollBack();
-            throw $e;
-        }
+        $user = (new FindOrCreateUserAction())->run($data);
+
+        /**@var Seller $seller */
+        (new CreateSellerAction())->run(CreateSellerData::from($request->validated()), $user);
+
+        Notification::notifyUser($user, 'owner', isset($user->temporary_password));
+
+        DB::commit();
+
+        return redirect()
+            ->route('admin.sellers.index')
+            ->with('success', __('Seller created successfully'));
     }
 
-    /**
-     * @throws \Exception
-     */
-    public function update(UpdateSellerRequest $request, string $sellerId): void
+    public function update(UpdateSellerRequest $request, Seller $seller): RedirectResponse
     {
-        DB::beginTransaction();
-        try {
-            $seller = Seller::query()->findOrFail($sellerId);
+        (new UpdateSellerAction())->run($seller, CreateSellerData::from($request->validated()));
 
-            $seller->update([
-                'name' => $request->string('name'),
-                'bin' => $request->string('bin'),
-                'reg_number' => $request->string('reg_number'),
-            ]);
-
-            DB::commit();
-        } catch (\Exception $e) {
-            DB::rollBack();
-            throw $e;
-        }
-    }
-
-    private function getUser(string $email)
-    {
-        if (!User::emailExists($email)) {
-            $tempPassword = Str::random(8);
-
-            return User::query()->create([
-                'email' => $email,
-                'temporary_password' => $tempPassword,
-                'password' => $tempPassword,
-                'is_admin' => true
-            ]);
-        }
-
-        return User::getUserByEmail($email);
-    }
-
-    private function notifyUser(User $user, bool $isNew): void
-    {
-        if ($isNew) {
-            $message = "Welcome! Your temporary password is: {$user->temporary_password}";
-        } else {
-            $message = "You have been granted admin privileges.";
-        }
-
-        Mail::raw($message, function ($mail) use ($user) {
-            $mail->to($user->email)
-                ->subject('Account Information');
-        });
+        return redirect()
+            ->route('admin.sellers.index')
+            ->with('success', __('Seller updated successfully'));
     }
 }

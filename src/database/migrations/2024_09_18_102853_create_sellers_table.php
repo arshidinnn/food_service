@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('sellers', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('bin');
+            $table->string('name')->unique();
+            $table->string('bin')->unique();
             $table->string('reg_number');
             $table->boolean('is_banned')->default(false);
 

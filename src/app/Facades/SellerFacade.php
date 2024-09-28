@@ -7,8 +7,9 @@ use Illuminate\Support\Facades\Facade;
 
 /**
  *
- * @method static void store(\App\Http\Requests\Admin\Seller\StoreSellerRequest $request)
- * @method static void update(\App\Http\Requests\Admin\Seller\UpdateSellerRequest $request, string $sellerId)
+ * @method static \Illuminate\Contracts\Pagination\LengthAwarePaginator get()
+ * @method static \Illuminate\Http\RedirectResponse store(\App\Http\Requests\Admin\Seller\StoreSellerRequest $request)
+ * @method static \Illuminate\Http\RedirectResponse update(\App\Http\Requests\Admin\Seller\UpdateSellerRequest $request, \App\Models\Seller $seller)
  *
  * @see SellerService
  */
