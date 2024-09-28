@@ -22,6 +22,18 @@
         @enderror
     </div>
 
+    @if ($method == 'POST')
+        @can('anyActions', \App\Models\Seller::class)
+            <div class="mb-3">
+                <label for="seller" class="form-label">{{ __('Seller') }} <span class="text-danger">*</span></label>
+                <input type="text" class="form-control form-input" id="seller" name="seller"
+                       value="{{ $restaurant['seller'] ?? old('seller') }}" placeholder="{{ __('Enter seller') }}">
+                @error('seller')
+                <div class="form-warning"> {{ $message }} </div>
+                @enderror
+            </div>
+        @endcan
+    @endif
     <div class="mb-3">
         <label for="image" class="form-label">{{ __('Image') }}</label>
         <input type="file" class="form-control" id="image" name="image" accept="image/*">
