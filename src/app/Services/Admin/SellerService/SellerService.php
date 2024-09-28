@@ -26,33 +26,35 @@ class SellerService
 
     public function store(StoreSellerRequest $request): RedirectResponse
     {
-        DB::beginTransaction();
+        DB::transaction(function() use ($request) {
+            $user = (new FindOrCreateUserAction())->run(CreateUserData::from([
+                'email' => $request->string('email'),
+                'role' => 'owner',
+            ]));
 
-        $data = CreateUserData::from([
-            'email' => $request->string('email'),
-            'role' => 'owner',
-        ]);
+            (new CreateSellerAction())->run(CreateSellerData::from($request->validated()), $user);
 
-        $user = (new FindOrCreateUserAction())->run($data);
+            Notification::notifyUser($user, 'owner', isset($user->temporary_password));
+        });
 
-        /**@var Seller $seller */
-        (new CreateSellerAction())->run(CreateSellerData::from($request->validated()), $user);
-
-        Notification::notifyUser($user, 'owner', isset($user->temporary_password));
-
-        DB::commit();
-
-        return redirect()
-            ->route('admin.sellers.index')
-            ->with('success', __('Seller created successfully'));
+        return $this->redirectToSellers(__('Seller created successfully'));
     }
 
     public function update(UpdateSellerRequest $request, Seller $seller): RedirectResponse
     {
         (new UpdateSellerAction())->run($seller, CreateSellerData::from($request->validated()));
 
-        return redirect()
-            ->route('admin.sellers.index')
-            ->with('success', __('Seller updated successfully'));
+        return $this->redirectToSellers(__('Seller updated successfully'));
+    }
+
+    /**
+     * Redirect to the sellers index with a success message.
+     *
+     * @param string $message
+     * @return RedirectResponse
+     */
+    protected function redirectToSellers(string $message): RedirectResponse
+    {
+        return redirect()->route('admin.sellers.index')->with('success', $message);
     }
 }
