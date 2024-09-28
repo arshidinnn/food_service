@@ -24,7 +24,7 @@ class StorageService
     /**
      * @throws Exception
      */
-    public function updateImage(UploadedFile|null $image, object $model, string $path = 'images'): void
+    public function updateImage(UploadedFile|null $image, object $model, string $path = 'images'): string
     {
         if (!isset($image)) {
             throw new Exception('No image file provided.');
@@ -34,7 +34,7 @@ class StorageService
             Storage::disk('public')->delete($this->getImagePath($model->image));
         }
 
-        $model->image = $this->handleImageUpload($image, $path);
+        return $this->handleImageUpload($image, $path);
     }
 
     public function deleteImage(object $model): void

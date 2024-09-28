@@ -9,7 +9,7 @@ class UpdateRestaurantRequest extends FormRequest
     public function rules(): array
     {
         return [
-//            'image' => 'nullable|mimes:jpg,jpeg,png|max:10240',
+            'image' => 'nullable|mimes:jpg,jpeg,png|max:10240',
             'name' => 'required|string|max:255',
             'description' => 'nullable|string|max:500'
         ];

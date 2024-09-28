@@ -8,13 +8,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 
+
 /**
- * 
+ *
  *
  * @property int $id
- * @property string|null $image
+ * @property string $image
  * @property string $name
- * @property string|null $description
+ * @property string $description
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property int $seller_id
@@ -43,5 +44,12 @@ class Restaurant extends Model
 
     public function seller(): BelongsTo {
         return $this->belongsTo(Seller::class);
+    }
+
+    public function getSellerAttribute(): string {
+        $this->loadMissing('seller');
+        $seller = $this->seller()->first();
+
+        return $seller->name;
     }
 }
