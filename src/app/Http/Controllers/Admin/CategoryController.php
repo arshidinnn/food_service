@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Facades\CategoryFacade as Category;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\Category\CategoryRequest;
+use App\Http\Requests\Admin\Category\StoreCategoryRequest;
+use App\Http\Requests\Admin\Category\UpdateCategoryRequest;
 use App\Models\Category as CategoryModel;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
@@ -14,36 +14,32 @@ class CategoryController extends Controller
 {
     public function index(): View
     {
+        $this->authorize('viewAny', CategoryModel::class);
         $categories = Category::get();
         return view('admin.categories.index', compact('categories'));
     }
 
-    public function store(CategoryRequest $request): JsonResponse
+    public function store(StoreCategoryRequest $request)
     {
-        Category::store($request);
-
-        return response()->json([
-            'success' => 'Category created successfully'
-        ]);
+        $this->authorize('create', CategoryModel::class);
+        return Category::store($request);
     }
 
-    public function update(CategoryRequest $request, CategoryModel $category): RedirectResponse
+    public function update(UpdateCategoryRequest $request, CategoryModel $category): RedirectResponse
     {
-        if ($request->str('name') == $category->name) {
+        $this->authorize('update', $category);
+
+        if ($request->string('name_edit') == $category->name) {
             return back();
         }
 
-        Category::update($request, $category);
-
-        return back()
-            ->with('success', __('Category updated successfully'));
+        return Category::update($request, $category);
     }
 
     public function destroy(CategoryModel $category): RedirectResponse
     {
-        Category::delete($category);
+        $this->authorize('delete', $category);
 
-        return back()
-            ->with('success', __('Category deleted successfully'));
+        return Category::delete($category);
     }
 }

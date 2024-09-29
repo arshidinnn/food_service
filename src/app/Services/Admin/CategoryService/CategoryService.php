@@ -2,45 +2,68 @@
 
 namespace App\Services\Admin\CategoryService;
 
-use App\Http\Requests\Admin\Category\CategoryRequest;
+use App\Http\Requests\Admin\Category\StoreCategoryRequest;
+use App\Http\Requests\Admin\Category\UpdateCategoryRequest;
 use App\Models\Category;
 use App\Models\Seller;
 use App\Models\User;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 
 class CategoryService
 {
-    public function get(): array
+    public function get(): LengthAwarePaginator
     {
-        /** @var User $user */
-        $user = Auth::user();
-
-        $seller = $user->seller()->first();
-
-        return $seller->categories()->get()->toArray();
+        return $this->getSeller()->categories()->paginate(6);
     }
 
-    public function store(CategoryRequest $request): void
+    public function store(StoreCategoryRequest $request): RedirectResponse
     {
-        /** @var User $user */
-        $user = Auth::user();
-
-        /** @var Seller $seller*/
-        $seller = $user->seller()->first();
-
-        $seller->categories()->create([
-            'name' => $request->str('name')
+        $this->getSeller()->categories()->create([
+            'name' => $request->string('name_create')
         ]);
+
+        return $this->redirectWithMessage('success', __('Category created successfully'));
     }
 
-    public function update(CategoryRequest $request, Category $category): void
+    public function update(UpdateCategoryRequest $request, Category $category): RedirectResponse
     {
-        $category->name = $request->str('name');
-        $category->save();
+        $category->update([
+            'name' => $request->string('name_edit')
+        ]);
+
+        return $this->redirectWithMessage('success', __('Category updated successfully'));
     }
 
-    public function delete(Category $category): void
+    public function delete(Category $category): RedirectResponse
     {
         $category->delete();
+
+        return $this->redirectWithMessage('success', __('Category deleted successfully'));
+    }
+
+    /**
+     * Get the seller model for the current authenticated user.
+     *
+     * @return Seller
+     */
+    protected function getSeller(): Seller
+    {
+        /** @var User $user */
+        $user = Auth::user();
+        return $user->seller()->first();
+    }
+
+    /**
+     * Redirect back with a flash message.
+     *
+     * @param string $status
+     * @param string $message
+     * @return RedirectResponse
+     */
+    protected function redirectWithMessage(string $status, string $message): RedirectResponse
+    {
+        return back()->with($status, $message);
     }
 }

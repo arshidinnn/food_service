@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Auth;
 
 
+
 /**
  * 
  *
@@ -16,20 +17,18 @@ use Illuminate\Support\Facades\Auth;
  * @property string $name
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property int $restaurant_id
+ * @property int $seller_id
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Food> $foods
  * @property-read int|null $foods_count
- * @property-read \App\Models\Seller|null $seller
+ * @property-read \App\Models\Seller $seller
  * @method static \Illuminate\Database\Eloquent\Builder|Category newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Category newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Category query()
  * @method static \Illuminate\Database\Eloquent\Builder|Category whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Category whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Category whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Category whereRestaurantId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Category whereUpdatedAt($value)
- * @property int $seller_id
  * @method static \Illuminate\Database\Eloquent\Builder|Category whereSellerId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Category whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class Category extends Model

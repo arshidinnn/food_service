@@ -6,12 +6,12 @@ use App\Services\Admin\CategoryService\CategoryService;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \App\Services\Admin\CategoryService\CategoryService
+ * @method \Illuminate\Contracts\Pagination\LengthAwarePaginator get()
+ * @method static \Illuminate\Http\RedirectResponse store(\App\Http\Requests\Admin\Category\StoreCategoryRequest $request)
+ * @method static \Illuminate\Http\RedirectResponse update(\App\Http\Requests\Admin\Category\UpdateCategoryRequest $request, \App\Models\Category $category)
+ * @method static \Illuminate\Http\RedirectResponse delete(\App\Models\Category $category)
  *
- * @method static array get()
- * @method static void store(\App\Http\Requests\Admin\Category\CategoryRequest $request)
- * @method static void update(\App\Http\Requests\Admin\Category\CategoryRequest $request, \App\Models\Category $category)
- * @method static void delete(\App\Models\Category $category)
+ * @see CategoryService
  */
 class CategoryFacade extends Facade
 {

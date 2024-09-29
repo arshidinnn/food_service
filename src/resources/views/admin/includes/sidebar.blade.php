@@ -2,23 +2,29 @@
     <div class="logo p-4 text-center">FOOD</div>
     <div class="position-sticky sticky-top">
         <ul class="nav nav-list flex-column text-white">
-            <li class="nav-item">
-                <a class="nav-link link-item text-white active" href="{{ route('admin.sellers.index') }}">
-                    {{ __('Sellers') }}
-                </a>
-            </li>
+            @can('anyActions', \App\Models\Seller::class)
+                <li class="nav-item">
+                    <a class="nav-link link-item text-white active" href="{{ route('admin.sellers.index') }}">
+                        {{ __('Sellers') }}
+                    </a>
+                </li>
+            @endcan
 
-            <li class="nav-item">
-                <a class="nav-link link-item text-white active" href="{{ route('admin.restaurants.index') }}">
-                    {{ __('Restaurants') }}
-                </a>
-            </li>
+            @can('viewAny', \App\Models\Restaurant::class)
+                <li class="nav-item">
+                    <a class="nav-link link-item text-white active" href="{{ route('admin.restaurants.index') }}">
+                        {{ __('Restaurants') }}
+                    </a>
+                </li>
+            @endcan
 
-            <li class="nav-item">
-                <a class="nav-link link-item text-white active" href="{{ route('admin.categories.index') }}">
-                    {{ __('Categories') }}
-                </a>
-            </li>
+            @can('viewAny', \App\Models\Category::class)
+                <li class="nav-item">
+                    <a class="nav-link link-item text-white active" href="{{ route('admin.categories.index') }}">
+                        {{ __('Categories') }}
+                    </a>
+                </li>
+            @endcan
 
             <li class="nav-item">
                 <a class="nav-link link-item text-white active" href="{{ route('admin.foods.index') }}">
@@ -26,31 +32,7 @@
                 </a>
             </li>
 
-            <li class="nav-item">
-                <a class="nav-link link-item text-white active" href="#">
-                    Товары
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white" href="#">
-                    Настройки
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link link-item text-white" href="#">
-                    Профиль
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link link-item text-white" href="#">
-                    Корзина
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link link-item text-white" href="#">
-                    Редактировать
-                </a>
-            </li>
+
         </ul>
     </div>
 </nav>
