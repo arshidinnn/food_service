@@ -26,13 +26,13 @@
                 </li>
             @endcan
 
-            <li class="nav-item">
-                <a class="nav-link link-item text-white active" href="{{ route('admin.foods.index') }}">
-                    {{ __('Foods') }}
-                </a>
-            </li>
-
-
+            @can('viewAny', \App\Models\Food::class)
+                <li class="nav-item">
+                    <a class="nav-link link-item text-white active" href="{{ route('admin.foods.index') }}">
+                        {{ __('Foods') }}
+                    </a>
+                </li>
+            @endcan
         </ul>
     </div>
 </nav>

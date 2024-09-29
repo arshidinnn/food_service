@@ -8,8 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+
 /**
- * 
+ *
  *
  * @property int $id
  * @property string $image
@@ -21,7 +22,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property int $category_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int $restaurant_id
  * @property-read \App\Models\Category $category
+ * @property-read \App\Models\Seller|null $seller
  * @method static \Illuminate\Database\Eloquent\Builder|Food newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Food newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Food query()
@@ -32,12 +35,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Food whereImage($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Food wherePrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Food whereQuantity($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Food whereRestaurantId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Food whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Food whereUnit($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Food whereUpdatedAt($value)
- * @property int $seller_id
- * @property-read \App\Models\Seller $seller
- * @method static \Illuminate\Database\Eloquent\Builder|Food whereSellerId($value)
  * @mixin \Eloquent
  */
 class Food extends Model
@@ -65,8 +66,8 @@ class Food extends Model
         return $this->belongsTo(Category::class);
     }
 
-    public function seller(): BelongsTo
+    public function restaurant(): BelongsTo
     {
-        return $this->belongsTo(Seller::class);
+        return $this->belongsTo(Restaurant::class);
     }
 }

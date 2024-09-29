@@ -12,7 +12,7 @@ class StoreFoodRequest extends FormRequest
     {
         return [
             'title' => 'required|string|max:100',
-            'description' => 'nullable|string|max:500',
+            'description' => 'required|string|max:500',
             'image' => 'required|mimes:jpg,jpeg,png|max:10240',
             'price' => 'required|numeric',
             'quantity' => 'required|numeric',

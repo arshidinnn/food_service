@@ -4,10 +4,6 @@
     {{ __('Categories') }}
 @endsection
 
-@push('meta')
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-@endpush
-
 @section('content')
     @if(session('success'))
         <div class="alert alert-success">

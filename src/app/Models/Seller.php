@@ -6,11 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property string $name
@@ -63,11 +64,10 @@ class Seller extends Model
         return $this->hasOne(Restaurant::class);
     }
 
-    public function foods(): HasMany
+    public function foods(): HasManyThrough
     {
-        return $this->hasMany(Food::class);
+        return $this->hasManyThrough(Food::class, Restaurant::class);
     }
-
     public function getEmailAttribute(): ?string
     {
         $this->loadMissing('users');

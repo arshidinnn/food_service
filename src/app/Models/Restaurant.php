@@ -46,6 +46,10 @@ class Restaurant extends Model
         return $this->belongsTo(Seller::class);
     }
 
+    public function foods(): HasMany {
+        return $this->hasMany(Food::class);
+    }
+
     public function getSellerAttribute(): string {
         $this->loadMissing('seller');
         $seller = $this->seller()->first();
