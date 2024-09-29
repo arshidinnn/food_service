@@ -55,6 +55,9 @@
                         </tbody>
                     </table>
                 </div>
+                <div class="pagination-wrapper">
+                    {{$restaurants->appends(request()->query())->links()}}
+                </div>
             </div>
         </div>
     @endif
