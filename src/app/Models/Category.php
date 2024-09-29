@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -11,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property string $name
@@ -48,17 +49,17 @@ class Category extends Model
         return $this->hasMany(Food::class);
     }
 
-    public static function getCategoriesBySeller(): array
+    public static function getCategoriesBySeller(): Collection
     {
         /** @var User $user */
         $user = Auth::user();
 
+        /** @var Seller $seller */
         $seller = $user->seller()->first();
 
         return $seller
             ->categories()
             ->select(['id', 'name'])
-            ->get()
-            ->toArray();
+            ->get();
     }
 }

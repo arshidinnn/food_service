@@ -24,7 +24,7 @@ class CategoryService
             'name' => $request->string('name_create')
         ]);
 
-        return $this->redirectWithMessage('success', __('Category created successfully'));
+        return $this->redirectBack( __('Category created successfully'));
     }
 
     public function update(UpdateCategoryRequest $request, Category $category): RedirectResponse
@@ -33,14 +33,14 @@ class CategoryService
             'name' => $request->string('name_edit')
         ]);
 
-        return $this->redirectWithMessage('success', __('Category updated successfully'));
+        return $this->redirectBack( __('Category updated successfully'));
     }
 
     public function delete(Category $category): RedirectResponse
     {
         $category->delete();
 
-        return $this->redirectWithMessage('success', __('Category deleted successfully'));
+        return $this->redirectBack( __('Category deleted successfully'));
     }
 
     /**
@@ -56,14 +56,13 @@ class CategoryService
     }
 
     /**
-     * Redirect back with a flash message.
+     * Redirect back with a success message.
      *
-     * @param string $status
      * @param string $message
      * @return RedirectResponse
      */
-    protected function redirectWithMessage(string $status, string $message): RedirectResponse
+    protected function redirectBack(string $message): RedirectResponse
     {
-        return back()->with($status, $message);
+        return back()->with('success', $message);
     }
 }
